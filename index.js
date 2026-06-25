@@ -18,7 +18,6 @@ const EXPECTED_SECRET = process.env.MONITOR_SECRET || "seu_secret_compartilhado"
 
 const clients = {};
 
-// Função para formatar data e hora no padrão brasileiro (DD/MM/AAAA, HH:MM:SS)
 function getBrTimestamp(timestampSeconds) {
   const date = timestampSeconds ? new Date(timestampSeconds * 1000) : new Date();
   return date.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
@@ -30,7 +29,7 @@ async function sendDiscordEmbed(embed) {
     await fetchFn(DISCORD_WEBHOOK, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ embeds: [embed] }) // Envia como Embed do Discord
+      body: JSON.stringify({ embeds: [embed] })
     });
   } catch (e) {
     console.warn("Falha ao notificar Discord:", e);
@@ -43,7 +42,6 @@ app.post('/heartbeat', (req, res) => {
   if (payload.secret !== EXPECTED_SECRET) return res.status(403).json({ok:false, err:"invalid secret"});
 
   const id = String(payload.clientId);
-  // Prioriza o Display Name recebido do Roblox
   const displayName = payload.displayName || payload.username || `ID: ${id}`; 
   const now = Math.floor(Date.now()/1000);
   const prev = clients[id];
@@ -58,10 +56,21 @@ app.post('/heartbeat', (req, res) => {
   if (!prev || prev.status === "offline" || prev.status === "unknown") {
     clients[id].status = "online";
     
-    // Embed no estilo do antigo (Verde)
+    // Mensagem padrão
+    let messageContent = `**${displayName}**, você está online fofo 💙`;
+    
+    // SISTEMA DE EASTER EGGS (ONLINE)
+    if (displayName === "Gui") {
+      messageContent = `**${displayName}**, você está online Playba 🔥`;
+    } else if (displayName === "Coletor2") {
+      messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está online fofo 💙`;
+    } else if (displayName === "Líder Coletor") {
+      messageContent = `**𝑑𝑎𝑛**, você está online fofo 💙`;
+    }
+    
     const embed = {
-      description: `**${displayName}**, você está online fofo 💙`,
-      color: 3066993, // Cor Verde (Decimal)
+      description: messageContent,
+      color: 3066993, // Verde
     };
     
     sendDiscordEmbed(embed);
@@ -77,10 +86,21 @@ setInterval(() => {
     if (obj.status !== "offline" && (now - obj.lastSeen) > TIMEOUT_SECONDS) {
       obj.status = "offline";
       
-      // Embed no estilo do antigo (Vermelho + Último visto)
+      // Mensagem padrão de saída
+      let messageContent = `**${obj.displayName}**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
+      
+      // SISTEMA DE EASTER EGGS (OFFLINE)
+      if (obj.displayName === "Gui") {
+        messageContent = `Não sobrou nada pro beta, **${obj.displayName}** saiu do game.. 🔥`;
+      } else if (obj.displayName === "Coletor2") {
+        messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
+      } else if (obj.displayName === "Líder Coletor") {
+        messageContent = `**𝑑𝑎𝑛**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
+      }
+      
       const embed = {
-        description: `**${obj.displayName}**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨\n\n*Último visto: ${getBrTimestamp(obj.lastSeen)}*`,
-        color: 15158332, // Cor Vermelha (Decimal)
+        description: `${messageContent}\n\n*Último visto: ${getBrTimestamp(obj.lastSeen)}*`,
+        color: 15158332, // Vermelho
       };
       
       sendDiscordEmbed(embed);
@@ -96,3 +116,4 @@ app.get('/status', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Monitor rodando na porta ${PORT}`);
 });
+  
