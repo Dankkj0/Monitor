@@ -16,6 +16,10 @@ const CHECK_INTERVAL_MS = parseInt(process.env.CHECK_INTERVAL_MS) || 15_000;
 const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK || "";
 const EXPECTED_SECRET = process.env.MONITOR_SECRET || "seu_secret_compartilhado";
 
+// IDs dos cargos do seu servidor do Discord
+const CARGO_ONLINE = "<@&1519498881644232744>";
+const CARGO_OFFLINE = "<@&1519498766938280046>";
+
 const clients = {};
 
 function getBrTimestamp(timestampSeconds) {
@@ -56,16 +60,16 @@ app.post('/heartbeat', (req, res) => {
   if (!prev || prev.status === "offline" || prev.status === "unknown") {
     clients[id].status = "online";
     
-    // Mensagem padrão
-    let messageContent = `**${displayName}**, você está online fofo 💙`;
+    // Mensagem padrão trocando a palavra pelo cargo menção
+    let messageContent = `**${displayName}**, você está ${CARGO_ONLINE} fofo 💙`;
     
-    // EASTER EGGS DE ENTRADA (ONLINE)
+    // EASTER EGGS DE ENTRADA
     if (displayName === "Gui") {
-      messageContent = `**${displayName}**, você está online Playba 🔥`;
+      messageContent = `**${displayName}**, você está ${CARGO_ONLINE} Playba 🔥`;
     } else if (displayName === "LiderColetor") {
-      messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está online fofo 💙`;
+      messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está ${CARGO_ONLINE} fofo 💙`;
     } else if (displayName === "Coletor2") {
-      messageContent = `**𝑑𝑎𝑛**, você está online fofo 💙`;
+      messageContent = `**𝑑𝑎𝑛**, você está ${CARGO_ONLINE} fofo 💙`;
     }
     
     const embed = {
@@ -86,16 +90,16 @@ setInterval(() => {
     if (obj.status !== "offline" && (now - obj.lastSeen) > TIMEOUT_SECONDS) {
       obj.status = "offline";
       
-      // Mensagem padrão de saída
-      let messageContent = `**${obj.displayName}**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
+      // Mensagem padrão de saída trocando a palavra pelo cargo menção
+      let messageContent = `**${obj.displayName}**, você está ${CARGO_OFFLINE}, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       
-      // EASTER EGGS DE SAÍDA (OFFLINE)
+      // EASTER EGGS DE SAÍDA
       if (obj.displayName === "Gui") {
         messageContent = `Não sobrou nada pro beta, **${obj.displayName}** saiu do game.. 🔥`;
       } else if (obj.displayName === "LiderColetor") {
-        messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
+        messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está ${CARGO_OFFLINE}, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       } else if (obj.displayName === "Coletor2") {
-        messageContent = `**𝑑𝑎𝑛**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
+        messageContent = `**𝑑𝑎𝑛**, você está ${CARGO_OFFLINE}, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       }
       
       const embed = {
@@ -116,3 +120,4 @@ app.get('/status', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Monitor rodando na porta ${PORT}`);
 });
+         
