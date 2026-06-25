@@ -60,7 +60,7 @@ app.post('/heartbeat', (req, res) => {
   if (!prev || prev.status === "offline" || prev.status === "unknown") {
     clients[id].status = "online";
     
-    // Mensagem padrão trocando a palavra pelo cargo menção
+    // Mensagem padrão
     let messageContent = `**${displayName}**, você está ${CARGO_ONLINE} fofo 💙`;
     
     // EASTER EGGS DE ENTRADA
@@ -90,12 +90,12 @@ setInterval(() => {
     if (obj.status !== "offline" && (now - obj.lastSeen) > TIMEOUT_SECONDS) {
       obj.status = "offline";
       
-      // Mensagem padrão de saída trocando a palavra pelo cargo menção
+      // Mensagem padrão de saída
       let messageContent = `**${obj.displayName}**, você está ${CARGO_OFFLINE}, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       
-      // EASTER EGGS DE SAÍDA
+      // EASTER EGGS DE SAÍDA (Gui agora com o cargo offline inserido)
       if (obj.displayName === "Gui") {
-        messageContent = `Não sobrou nada pro beta, **${obj.displayName}** saiu do game.. 🔥`;
+        messageContent = `Não sobrou nada pro beta, **${obj.displayName}** está ${CARGO_OFFLINE}.. 🔥`;
       } else if (obj.displayName === "LiderColetor") {
         messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está ${CARGO_OFFLINE}, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       } else if (obj.displayName === "Coletor2") {
@@ -120,4 +120,3 @@ app.get('/status', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Monitor rodando na porta ${PORT}`);
 });
-         
