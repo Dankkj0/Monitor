@@ -94,7 +94,7 @@ setInterval(() => {
         messageContent = `Não sobrou nada pro beta, **${obj.displayName}** saiu do game.. 🔥`;
       } else if (obj.displayName === "Coletor2") {
         messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
-      } else if (obj.displayName === "Líder Coletor") {
+      } else if (obj.displayName === "LíderColetor") {
         messageContent = `**𝑑𝑎𝑛**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       }
       
