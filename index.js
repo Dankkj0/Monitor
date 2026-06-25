@@ -59,12 +59,12 @@ app.post('/heartbeat', (req, res) => {
     // Mensagem padrão
     let messageContent = `**${displayName}**, você está online fofo 💙`;
     
-    // SISTEMA DE EASTER EGGS (ONLINE)
+    // EASTER EGGS DE ENTRADA (ONLINE)
     if (displayName === "Gui") {
       messageContent = `**${displayName}**, você está online Playba 🔥`;
-    } else if (displayName === "Coletor2") {
+    } else if (displayName === "LiderColetor") {
       messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está online fofo 💙`;
-    } else if (displayName === "Líder Coletor") {
+    } else if (displayName === "Coletor2") {
       messageContent = `**𝑑𝑎𝑛**, você está online fofo 💙`;
     }
     
@@ -89,12 +89,12 @@ setInterval(() => {
       // Mensagem padrão de saída
       let messageContent = `**${obj.displayName}**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       
-      // SISTEMA DE EASTER EGGS (OFFLINE)
+      // EASTER EGGS DE SAÍDA (OFFLINE)
       if (obj.displayName === "Gui") {
         messageContent = `Não sobrou nada pro beta, **${obj.displayName}** saiu do game.. 🔥`;
-      } else if (obj.displayName === "Coletor2") {
+      } else if (obj.displayName === "LiderColetor") {
         messageContent = `**𝑑𝑎𝑛𝑖𝑒𝑙**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
-      } else if (obj.displayName === "LíderColetor") {
+      } else if (obj.displayName === "Coletor2") {
         messageContent = `**𝑑𝑎𝑛**, você está offline, volte o mais rápido que puder... ou não, você pode dormir 💙✨`;
       }
       
@@ -116,4 +116,3 @@ app.get('/status', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Monitor rodando na porta ${PORT}`);
 });
-  
